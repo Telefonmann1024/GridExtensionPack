@@ -1,7 +1,9 @@
 package org.vaadin.teemusa.gridextensions.tableselection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.function.BinaryOperator;
 
@@ -12,7 +14,6 @@ import org.vaadin.teemusa.gridextensions.client.tableselection.TableSelectionSta
 
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.provider.QuerySortOrder;
-import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.server.SerializableComparator;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.components.grid.GridSelectionModel;
@@ -77,7 +78,11 @@ public class TableSelectionModel<T> extends MultiSelectionModelImpl<T> {
 				List<QuerySortOrder> sortProperties = new ArrayList<>();
 				getParent().getSortOrder().stream().map(order -> order.getSorted().getSortOrder(order.getDirection()))
 						.forEach(s -> s.forEach(sortProperties::add));
-				getParent().getDataProvider().fetch(new Query<>(start, length, sortProperties, inMemorySorting, null));
+				
+		        LinkedHashSet<T> addedItems = new LinkedHashSet<>();
+		        getParent().getDataProvider().fetch(new Query<>(start, length, sortProperties, inMemorySorting, null))
+		        	.forEach(addedItems::add);
+		        updateSelection(addedItems, Collections.emptySet(), true);
 			}
 		});
 	}
