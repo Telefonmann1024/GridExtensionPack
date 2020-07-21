@@ -24,6 +24,7 @@ public abstract class AbstractGridExtensionConnector extends AbstractExtensionCo
 	 * 
 	 * @return grid connector
 	 */
+	@Override
 	public GridConnector getParent() {
 		return (GridConnector) super.getParent();
 	}

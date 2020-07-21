@@ -69,6 +69,7 @@ public class TableSelectionModelConnector extends MultiSelectionModelConnector {
 		clickHandler = grid.addBodyClickHandler(handler);
 	}
 
+	@Override
 	public TableSelectionState getState() {
 		return (TableSelectionState) super.getState();
 	}
